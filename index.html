@@ -14,39 +14,39 @@
 	</head>
 	<body>
 	<div class="header">
-		<div class="container">
 			<div class="row">
-				
+				<div class="col-md-1">
+				</div>
 				<div class="col-md-2">
 					<h3 class="logo">POMODORO<strong>CLOCK</strong></h3>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
 				</div>
 				<div class="col-md-6">
 					<div class="menu">
-						<a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i><span class="menu-label">Pomodoro</span></a>
+						<a href="#pomodoro" class="active"><i class="fa fa-clock-o" aria-hidden="true"></i><span class="menu-label">Pomodoro</span></a>
 						<a href="#"><i class="fa fa-list" aria-hidden="true"></i><span class="menu-label">Worklog</span></a>
-						<a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i><span class="menu-label">About</span></a>
-						<a href="#"><i class="fa fa-cog" aria-hidden="true"></i><span class="menu-label">Settings</span></a>
+						<a href="#about"><i class="fa fa-info-circle" aria-hidden="true"></i><span class="menu-label">About</span></a>
+						<a href="#settings" class="settings-modal" data-toggle="modal" data-target="#settings"><i class="fa fa-cog" aria-hidden="true"></i><span class="menu-label">Settings</span></a>
+
 						<!--<a href="#"><i class="fa fa-twitter"></i><span class="menu-label">Twitter</span></a>-->
 					</div>
 				</div>
 				
 			</div>	
-		</div>
 	</div>
 
 	<div id="pomodoro" class="pomodoro">
 		<div class="well pomodoro-well">
-			<h4 id="current-pomodoro">POMODORO #1</h4>
+			<h4 id="current-pomodoro"></h4>
 			<div class="timer-container container">
-				<h1 class="time">25:00</h1>
+				<h1 class="time" id="time"></h1>
 			</div>
 			
 			<div class="timer-controls">
-				<button id="start" class="button"><i class="fa fa-play" aria-hidden="true"></i><span class="control-label">START</span></button>
-				<button id="pause" class="button"><i class="fa fa-pause" aria-hidden="true"></i><span class="control-label">PAUSE</span></button>
-				<button id="stop" class="button"><i class="fa fa-stop" aria-hidden="true"></i><span class="control-label">STOP</span></button>
+				<button id="start" class="button"><i class="fa fa-play" aria-hidden="true"></i><span class="control-label start-label">START</span></button>
+				<button id="pause" class="button"><i class="fa fa-pause" aria-hidden="true"></i><span class="control-label pause-label">PAUSE</span></button>
+				<button id="stop" class="button"><i class="fa fa-stop" aria-hidden="true"></i><span class="control-label stop-label">STOP</span></button>
 			</div>
 		</div>
 	</div>
@@ -102,6 +102,53 @@
 
 
 
+		</div>
+	</div>
+
+	<div class="settings modal fade" id="settings" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Settings</h4> 
+				</div>
+				<div class="modal-body">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#timer-settings" data-toggle="tab">Timer</a></li>
+					<li><a href="#notification-settings" data-toggle="tab">Notification</a></li>
+				</ul>
+
+				<div class="tab-content">
+					<div class="tab-pane form-horizontal active" id="timer-settings">
+				       <div class="row">
+				       	<div class="control-group">
+				       		<label class="control-label col-sm-4" for="pomodoro-duration">Pomodoro duration</label>
+				       		<div class="controls col-sm-4">
+				       			<input type="text" id="pomodoro-duration" placeholder="00:00:00">
+				       		</div>
+				       	</div>
+				       	</div>
+				       	<div class="row">
+				       	<div class="control-group">
+				       		<label class="control-label col-sm-4" for="short-break-duration">Short break duration</label>
+				       		<div class="controls col-sm-4">
+				       			<input type="text" id="short-break-duration" placeholder="00:00:00">
+				       		</div>
+				       	</div>
+				       </div>
+					</div>
+					<div class="tab-pane" id="notification-settings">
+						<p>Notif</p>
+					</div>
+				</div>
+
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	

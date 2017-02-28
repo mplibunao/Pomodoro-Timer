@@ -16,16 +16,18 @@ body{
 	background:linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("media/tamarcus-brown-131428.jpg") no-repeat fixed;
 	background-size:cover;
 
-	position:relative;
+	position:fixed;
+	z-index: 999;
 	color:#FFF;
 	min-height: 70px;
-	width:100%;
+	width: 100%;
 	box-shadow: 0 -1px 0 #FFF inset;
 	border:1px solid rgba(0,0,0,.7); 
 }
 
 .menu{
 	padding-top: 25px;
+	padding-bottom: 25px;
 }
 
 .menu a{
@@ -50,6 +52,12 @@ body{
 	padding-left:5px;
 }
 
+.menu .active{
+	background-color:#e65c00;
+	border:2px solid #e65c00;
+}
+
+
 .pomodoro{
 	text-align: center;
 }
@@ -58,7 +66,7 @@ body{
 	width:60%;
 	margin-left:auto;
 	margin-right: auto;
-	margin-top:40px;
+	margin-top:140px;
 	background-color:rgba(255,30,0,.7);
 	color:#FFF;
 	display:inline-block;
@@ -75,16 +83,16 @@ body{
 .timer-container{
 	border-radius:50%;
 	display:inline-block;
-	width:225px;
-	height:225px;
+	width:280px;
+	height:280px;
 	text-align: center;
 	border:10px solid #FFF;
-
+	
 	/*background-color:#e65c00;*/
 }
 
 .time{
-	padding-top:50px;
+	padding-top:75px;
 	font-size:60px;
 }
 
@@ -116,7 +124,7 @@ body{
 }
 
 .about{
-	margin-top:100px;
+	margin-top:40px;
 	color:#FFF;
 	background:-webkit-linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url("media/anda-ambrosini-36101.jpg") no-repeat fixed;
 	background:-o-linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url("media/anda-ambrosini-36101.jpg") no-repeat fixed;
