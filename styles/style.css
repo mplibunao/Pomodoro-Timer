@@ -9,6 +9,7 @@ body{
 
 }
 
+
 .header{
 	background:-webkit-linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.7)), url("media/tamarcus-brown-131428.jpg") no-repeat fixed;
 	background:-o-linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("media/tamarcus-brown-131428.jpg") no-repeat fixed;
@@ -119,8 +120,36 @@ body{
 	padding-left: 5px;
 }
 
+.options{
+	margin-top: -10px;
+}
+
+.settings-modal{
+	left:10px;
+	text-align: left;
+	color:#FFF;
+	display:inline-block;
+	font-size:28px;
+	float:left;
+	padding-left: 15px;
+}
+
+.setting-modal:hover{
+	color:#000;
+}
+
+.settings-modal:focus{
+	outline:none;
+	color:#FFF;
+}
+
 #current-pomodoro{
 	text-align: right;
+	right:10px;
+	display: inline-block;
+	float: right;
+	padding-right: 10px;
+	padding-top: 3px;
 }
 
 .about{
@@ -185,4 +214,9 @@ body{
 
 .info-list{
 	margin-bottom: 50px;
+}
+
+.tab-pane{
+	padding-top: 30px;
+	padding-bottom: 30px;
 }
