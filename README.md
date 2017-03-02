@@ -9,3 +9,16 @@ User Stories:
 - I can reset the clock for my next pomodoro.
 
 - I can customize the length of each pomodoro.
+
+
+
+To be added in the future:
+- Add tasks/tags for each pomodoro
+- Set a target number of pomodoro and show the expected time of finish
+- Show an overview of the accomplished pomodoros in a table like view with time of finished for each pomodoro
+- View worklog and stats like total pomodoros, time spent, work days, average per day, streaks
+- View activity chart
+- View stats by date range
+- Export as CSV
+- Add pomodoros by project (need support for months, even years)
+- Add Habitica integration

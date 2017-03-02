@@ -124,44 +124,50 @@
 
 				<div class="tab-content">
 					<div class="tab-pane form-horizontal active" id="timer-settings">
+					<fieldset class="fieldset">
 				       <div class="row">
 				       		<div class="form-group">
 				       			<label class="control-label col-sm-5" for="pomodoro-duration">Pomodoro duration</label>
-				       			<div class="controls col-sm-4">
+				       			<div class="controls col-sm-5">
 				       				<input type="text" class="form-control" id="pomodoro-duration" placeholder="00:25:00">
+				       				<span class="help-block">hh:mm:ss</span>
 				       			</div>
 				       		</div>
 				       	</div>
 				       	<div class="row">
 				       		<div class="form-group">
 				       			<label class="control-label col-sm-5" for="short-break-duration">Short break duration</label>
-				       			<div class="controls col-sm-4">
+				       			<div class="controls col-sm-5">
 				       				<input type="text" class="form-control" id="short-break-duration" placeholder="00:05:00">
+				       				<span class="help-block">hh:mm:ss</span>
 				       			</div>
 				       		</div>
 				       </div>
 				       <div class="row">
 				       		<div class="form-group">
 				       			<label class="control-label col-sm-5" for="long-break-duration">Long break duration</label>
-				       			<div class="controls col-sm-4">
+				       			<div class="controls col-sm-5">
 				       				<input type="text" class="form-control" id="long-break-duration" placeholder="00:25:00">
+				       				<span class="help-block">hh:mm:ss</span>
 				       			</div>
 				       		</div>
 				       </div>
 				       <div class="row">
 				       		<div class="form-group">
 				       			<label class="control-label col-sm-5" for="long-break-delay">Long break delay</label>
-				       			<div class="controls col-sm-4">
+				       			<div class="controls col-sm-5">
 				       				<input type="text" class="form-control" id="long-break-delay" placeholder="4">
+				       				<span class="help-block">Pomodoros before long break</span>
 				       			</div>
 				       		</div>
 				       </div>
+				    </fieldset>
 				       <div class="row">
 				       		<div class="form-group">
 						       <div class="col-sm-5"></div>
-						       <div class="col-sm-4">
+						       <div class="col-sm-5">
 							       <div class="checkbox">
-							       		<label><input type="checkbox" value="auto-start-pomodoros" checked="checked">Auto start pomodoros</label>
+							       		<label><input type="checkbox" id="auto-start-pomodoros" value="auto-start-pomodoros" checked="checked">Auto start pomodoros</label>
 							       </div>
 						       </div>
 					       </div>
@@ -169,9 +175,9 @@
 				       <div class="row">
 				       		<div class="form-group">
 						       <div class="col-sm-5"></div>
-						       <div class="col-sm-4">
+						       <div class="col-sm-5">
 							       <div class="checkbox">
-							       		<label><input type="checkbox" value="auto-start-breaks" checked="checked">Auto start breaks</label>
+							       		<label><input type="checkbox" id="auto-start-breaks" value="auto-start-breaks" checked="checked">Auto start breaks</label>
 							       </div>
 						       </div>
 					       </div>
@@ -186,7 +192,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+					<button type="button" class="btn btn-primary modal-save">Save</button>
 				</div>
 			</div>
 		</div>

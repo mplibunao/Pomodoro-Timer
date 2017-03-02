@@ -17,6 +17,7 @@
 	@ pomodoroCounter tracks the number of pomodoros you are doing as displayed in the upper right of the timer. Also used to identify when to take
 	long breaks
 	@ activeTimer is boolean which prevents multiple instances of timer from running at the same time
+	@ longBreakDelay tells the program how many pomodoros between long breaks. Default is 4 poms then long break
 */
 var workLength = {
 	"hours": 0,
@@ -44,7 +45,7 @@ var autoStartBreaks = true;
 var autoStartPomodoros = true;
 var pomodoroCounter = 1;
 var activeTimer = false;
-
+var longBreakDelay = 4;
 
 
 /*
@@ -77,6 +78,7 @@ var getTimeRemaining = function(endTime){
 	};
 }
 
+
 /*	@ Start Clock
 	@ Duration parameter is an object which contains the duration of the session
 	@ End Time variable is computed by adding the duration to the current time (in ms)
@@ -84,6 +86,30 @@ var getTimeRemaining = function(endTime){
 	@ NEVERMIND Sets global variable remainingTime = time.total every second
 */
 var startClock = function(duration){
+
+	/* Anonymous function passed to setinterval */
+	var updateClock = function(){
+	var time = getTimeRemaining(endTime);
+	if (time.minutes < 10){
+		time.minutes = "0"+time.minutes;
+	}
+	if (time.seconds < 10){
+		time.seconds = "0"+time.seconds;
+	}
+		
+	//remainingTime = time.total;
+	clock.innerHTML = time.minutes + ":" + time.seconds;
+
+	if (time.total <= -1){
+	clearInterval(timeInterval);
+		if (status === 'work'){
+			nextSession('break');
+		} else{
+			nextSession('work');
+		};
+	}
+}
+
 	activeTimer = true;
 	isPaused=false;
 
@@ -94,7 +120,9 @@ var startClock = function(duration){
 	var currentTime = Date.parse(new Date());
 	var endTime = currentTime + durationMS;
 	var clock = document.getElementById('time');
-				
+	updateClock();
+	timeInterval = setInterval(updateClock,1000)
+	/*			
 	timeInterval = setInterval(function(){
 		var time = getTimeRemaining(endTime);
 		if (time.minutes < 10){
@@ -116,6 +144,7 @@ var startClock = function(duration){
 			};
 		}
 	}, 1000);
+	*/
 }
 /*	@ Handles transitioning from one session to another | Parameter is the type of session to be started
 	@ Shows an alert box
@@ -133,7 +162,7 @@ var nextSession = function(sessionType){
 		$('.stop-label').html('SKIP');
 		$('#stop').children('.fa').removeClass('fa-stop').addClass('fa-step-forward');
 		$('.pomodoro-well').css('background-color', 'rgba(9,102,104,.9)');
-		if (pomodoroCounter % 4 === 0){
+		if (pomodoroCounter % longBreakDelay === 0){
 			//start long break
 			status = "longBreak";
 			$('#current-pomodoro').html('Take a long break');
@@ -228,38 +257,192 @@ var stopClock = function(){
 */
 var setClock = function(time){
 	var clock = document.getElementById('time');
+	clock.innerHTML = addLeadingZeros(time);
+}
+
+/*	@ Convert int to string and add leading 0 if less than 10
+	@ Does not include hour in returned format if hour is 0
+*/
+var addLeadingZeros = function(time){
 	var minutes = time.minutes;
 	var hours = time.hours;
 	var seconds = time.seconds;
 
-	if (time.minutes <10){
+	if (time.minutes <10 && time.minutes.length != 2){
 		minutes = "0"+minutes;
-		//time.minutes = "0"+time.minutes;
 	}
-	if (time.seconds <10){
+	if (time.seconds <10 && time.seconds.length != 2){
 		seconds = "0"+seconds;
 		//time.seconds = "0"+time.seconds;
 	}
-
 	if (time.hours > 0){
 		if (time.hours < 10){
 			hours = "0"+hours;
-			//time.hours = "0"+time.hours;
 		}
-		clock.innerHTML = hours+":"+minutes+":"+seconds;
+		return hours +":"+minutes+":"+seconds;
 	} else{
-		console.log(minutes +":" + seconds);
-
-		clock.innerHTML = minutes+":"+seconds;
+		// if hidden arguments were passed, return hour anyway
+		if (arguments[1]){
+			return "00:"+minutes+":"+seconds;
+		}
+		return minutes+":"+seconds;
 	}
 }
 
+/*	@ Displays setting variables in modal
+	@ If timer is running / activeTimer = true; disable all textbox
+*/
+var getCurrentSettings = function(){
+	clearModalError();
+	var longBreakTemp = addLeadingZeros(longBreakLength, 'addHourAnyway');
+	var shortBreakTemp = addLeadingZeros(shortBreakLength, 'addHourAnyway');
+	var workTemp = addLeadingZeros(workLength, 'addHourAnyway');
+
+	$('#pomodoro-duration').val(workTemp);
+	$('#short-break-duration').val(shortBreakTemp);
+	$('#long-break-duration').val(longBreakTemp);
+	$('#long-break-delay').val(longBreakDelay);
+	$('#auto-start-pomodoros').prop('checked', autoStartPomodoros);
+	$('#auto-start-breaks').prop('checked', autoStartBreaks);
+
+	if (activeTimer === true){
+		$('.fieldset').prop('disabled', true);
+	} else {
+		$('.fieldset').prop('disabled', false);
+	}
+}
+
+//	@ Check if value follows the hh:mm:ss int format
+var validateSettingsValue = function(settings){
+	return settings.map(function(current){
+		return /^\d{2}:\d{2}:\d{2}$|^\d{2}:\d{2}$/.test(current);
+	});
+}
+
+/*	@ Called by getCurrentSettings when opening the modal
+	@ Resets or clears any error messages and styling in the modal
+*/
+var clearModalError = function(){
+	$('#pomodoro-duration').closest('.form-group').removeClass('has-error has-feedback');
+	$('#pomodoro-duration').closest('.controls').find('.glyphicon').remove();
+	$('#pomodoro-duration').next('.help-block').html('hh:mm:ss');
+	$('#short-break-duration').closest('.form-group').removeClass('has-error has-feedback');
+	$('#short-break-duration').closest('.controls').find('.glyphicon').remove();
+	$('#short-break-duration').next('.help-block').html('hh:mm:ss');
+	$('#long-break-duration').closest('.form-group').removeClass('has-error has-feedback');
+	$('#long-break-duration').closest('.controls').find('.glyphicon').remove();
+	$('#long-break-duration').next('.help-block').html('hh:mm:ss');
+	$('#long-break-delay').closest('.form-group').removeClass('has-error has-feedback');
+	$('#long-break-delay').closest('.controls').find('.glyphicon').remove();
+	$('#long-break-delay').next('.help-block').html('Pomodoros before long break');
+}
 
 
 
 $(document).ready(function(){
 
+	/*	@ Event Listener for save settings button in modal
+		@ Check validity of time formats and int and store results in an array
+		@ Check if all values are valid using array every, if not identify which failed the test
+	*/
+	$('.modal-save').on('click', function(){
+		var pomodoroDuration = $('#pomodoro-duration').val();
+		var shortBreakDuration = $('#short-break-duration').val();
+		var longBreakDuration = $('#long-break-duration').val();
+		var longBreak = $('#long-break-delay').val();
 
+		var settingsValue = [pomodoroDuration, shortBreakDuration, longBreakDuration];
+		var isValid = validateSettingsValue(settingsValue);
+		console.log(isValid);
+		if (isNaN(longBreak) === false && longBreak > 0){
+			isValid.push(true);
+		} else{
+			isValid.push(false);
+		}
+
+		var allValid = isValid.every(function(current){
+			return current === true;
+		});
+		
+		if (allValid === true){
+			console.log('saving settings');
+
+			pomodoroDuration = pomodoroDuration.split(':');
+			console.log(pomodoroDuration);
+			shortBreakDuration = shortBreakDuration.split(':');
+			longBreakDuration = longBreakDuration.split(':');
+
+			//change values of global variables
+			longBreakDelay = longBreak;
+			workLength.hours = pomodoroDuration[0];
+			workLength.minutes = pomodoroDuration[1];
+			workLength.seconds = pomodoroDuration[2];
+			shortBreakLength.hours = shortBreakDuration[0];
+			shortBreakLength.minutes = shortBreakDuration[1];
+			shortBreakLength.seconds = shortBreakDuration[2];
+			longBreakLength.hours = longBreakDuration[0];
+			longBreakLength.minutes = longBreakDuration[1];
+			longBreakLength.seconds = longBreakDuration[2];
+			autoStartPomodoros = $('#auto-start-pomodoros').prop("checked");
+			autoStartBreaks = $('#auto-start-breaks').prop("checked");
+			//close the modal using jquery
+			$('#settings').modal('hide');
+		} else{
+			for (var i=0; i<isValid.length; i++){
+				if (isValid[i] === false){
+					//switch i to the different text boxes
+					switch (i){
+						case 0:
+							$('#pomodoro-duration').closest('.form-group').addClass('has-error has-feedback');
+							$('#pomodoro-duration').closest('.controls').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+							$('#pomodoro-duration').next('.help-block').html('Please use the following format hh:mm:ss');
+							break;
+						case 1:
+							$('#short-break-duration').closest('.form-group').addClass('has-error has-feedback');
+							$('#short-break-duration').closest('.controls').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+							$('#short-break-duration').next('.help-block').html('Please use the following format hh:mm:ss');
+							break;
+						case 2:
+							$('#long-break-duration').closest('.form-group').addClass('has-error has-feedback');
+							$('#long-break-duration').closest('.controls').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+							$('#long-break-duration').next('.help-block').html('Please use the following format hh:mm:ss');
+							break;
+						case 3:
+							$('#long-break-delay').closest('.form-group').addClass('has-error has-feedback');
+							$('#long-break-delay').closest('.controls').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+							$('#long-break-delay').next('.help-block').html('Please use an integer to set the pomodoros before long break');
+							break;
+					}
+				} else{
+					switch (i){
+						case 0:
+							$('#pomodoro-duration').closest('.form-group').removeClass('has-error has-feedback');
+							$('#pomodoro-duration').closest('.controls').find('.glyphicon').remove();
+							$('#pomodoro-duration').next('.help-block').html('hh:mm:ss');
+							break;
+						case 1:
+							$('#short-break-duration').closest('.form-group').removeClass('has-error has-feedback');
+							$('#short-break-duration').closest('.controls').find('.glyphicon').remove();
+							$('#short-break-duration').next('.help-block').html('hh:mm:ss');
+							break;
+						case 2:
+							$('#long-break-duration').closest('.form-group').removeClass('has-error has-feedback');
+							$('#long-break-duration').closest('.controls').find('.glyphicon').remove();
+							$('#long-break-duration').next('.help-block').html('hh:mm:ss');
+							break;
+						case 3:
+							$('#long-break-delay').closest('.form-group').removeClass('has-error has-feedback');
+							$('#long-break-delay').closest('.controls').find('.glyphicon').remove();
+							$('#long-break-delay').next('.help-block').html('Pomodoros before long break');
+							break;
+					}
+				}
+			}
+		}
+	});
+
+	//	@ Event Listener for settings button
+	$('.settings-modal').on('click', getCurrentSettings);
 
 	/*	@ Event Listerner for navbar active */
 	$('.menu').on('click', 'a', function(){
