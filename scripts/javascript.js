@@ -46,7 +46,10 @@ var autoStartPomodoros = true;
 var pomodoroCounter = 1;
 var activeTimer = false;
 var longBreakDelay = 4;
-
+var timerBeep = new Audio('https://dl.dropboxusercontent.com/u/21999493/beep.mp3');
+var clockTicking = new Audio('https://dl.dropboxusercontent.com/u/21999493/clock-ticking-3.mp3') //10 secs
+timerBeep.volume = 0.5;
+console.log(timerBeep.volume);
 
 /*
 Calculate remaining time
@@ -157,6 +160,7 @@ var startClock = function(duration){
 var nextSession = function(sessionType){
 	activeTimer = false;
 	remainingTime ={};
+	timerBeep.play();
 	if (sessionType === "break"){
 		alert('Pomodoro is finished! Have a break');
 		$('.stop-label').html('SKIP');
