@@ -22,3 +22,4 @@ To be added in the future:
 - Export as CSV
 - Add pomodoros by project (need support for months, even years)
 - Add Habitica integration
+- Add desktop notifications (Notification API)
