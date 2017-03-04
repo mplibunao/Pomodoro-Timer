@@ -61,6 +61,10 @@ body{
 
 .pomodoro{
 	text-align: center;
+	-webkit-transition:background-color 1s, border 1s;
+	transition:background-color 1s, border 1s;
+	background-color: #FFF;
+	padding-bottom: 40px;
 }
 
 .pomodoro-well{
@@ -134,8 +138,19 @@ body{
 	padding-left: 15px;
 }
 
-.setting-modal:hover{
-	color:#000;
+.night-mode{
+	text-align: left;
+	left:10px;
+	font-size:28px;
+	color:#FFF;
+	display:inline-block;
+	float:left;
+	padding-left: 15px;
+}
+
+.night-mode:focus{
+	outline: none;
+	color:#FFF;
 }
 
 .settings-modal:focus{
@@ -153,7 +168,6 @@ body{
 }
 
 .about{
-	margin-top:40px;
 	color:#FFF;
 	background:-webkit-linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url("media/anda-ambrosini-36101.jpg") no-repeat fixed;
 	background:-o-linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url("media/anda-ambrosini-36101.jpg") no-repeat fixed;
@@ -219,4 +233,8 @@ body{
 .tab-pane{
 	padding-top: 30px;
 	padding-bottom: 30px;
+}
+
+.help-block{
+	font-size:11px;
 }

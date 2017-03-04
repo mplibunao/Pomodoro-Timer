@@ -40,6 +40,7 @@
 		<div class="well pomodoro-well">
 			<div class="row options">
 				<a href="#settings" data-toggle="modal" class="settings-modal" data-target="#settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
+				<a href="#" class="night-mode"><i class="fa fa-moon-o" aria-hidden="true"></i></a>
 				<h4 id="current-pomodoro"></h4>
 			</div>
 			<div class="row">
@@ -183,16 +184,67 @@
 					       </div>
 				       </div>
 					</div>
-					<div class="tab-pane" id="notification-settings">
+					<div class="tab-pane form-horizontal" id="notification-settings">
 						<div class="row">
 				       		<div class="form-group">
-				       			<label class="control-label col-sm-5" for="volume">Volume</label>
-				       			<div class="controls col-sm-5">
-				       				<input type="text" class="form-control" id="pomodoro-duration" placeholder="00:25:00">
-				       				<span class="help-block">hh:mm:ss</span>
+				       			<label class="control-label col-sm-4" for="volume">Volume</label>
+				       			<div class="col-sm-4">
+				       				<select class="form-control" id="volume">
+				       					<option value="0.1">10%</option>
+				       					<option value="0.2">20%</option>
+				       					<option value="0.3">30%</option>
+				       					<option value="0.4">40%</option>
+				       					<option value="0.5">50%</option>
+				       					<option value="0.6">60%</option>
+				       					<option value="0.7">70%</option>
+				       					<option value="0.8">80%</option>
+				       					<option value="0.9">80%</option>
+				       					<option value="1">100%</option>
+				       				</select>
 				       			</div>
 				       		</div>
 				       	</div>
+				       	<div class="row">
+				       		<div class="form-group">
+						       <div class="col-sm-4"></div>
+						       <div class="col-sm-6">
+							       <div class="checkbox">
+							       		<label><input type="checkbox" id="sound-the-alarm" >Play alarm sound</label>
+							       </div>
+						       </div>
+					       </div>
+				       </div>
+				       <div class="row">
+				       		<div class="form-group">
+						       <div class="col-sm-4"></div>
+						       <div class="col-sm-6">
+							       <div class="checkbox">
+							       		<label><input type="checkbox" id="ticking-sound" >Play ticking sound</label>
+							       </div>
+						       </div>
+					       </div>
+				       </div>
+				       <div class="row">
+				       		<div class="form-group">
+						       <div class="col-sm-4"></div>
+						       <div class="col-sm-6">
+							       <div class="checkbox">
+							       		<label><input type="checkbox" id="browser-alert">Enable browser alerts</label>
+							       		<span class="help-block">Raise browser alert when pomodoro/break is over</span>
+							       </div>
+						       </div>
+					       </div>
+				       </div>
+				       <div class="row">
+				       		<div class="form-group">
+						       <div class="col-sm-4"></div>
+						       <div class="col-sm-6">
+							       <div class="checkbox">
+							       		<label><input type="checkbox" id="browser-notifications" disabled>Enable browser notifications</label>
+							       </div>
+						       </div>
+					       </div>
+				       </div>
 					</div>
 				</div>
 

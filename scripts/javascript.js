@@ -21,20 +21,20 @@
 */
 var workLength = {
 	"hours": 0,
-	"minutes": 0,
-	"seconds": 10
+	"minutes": 25,
+	"seconds": 00
 }
 
 var shortBreakLength = {
 	"hours": 0,
-	"minutes": 0,
-	"seconds": 10
+	"minutes": 5,
+	"seconds": 00
 }
 
 var longBreakLength = {
 	"hours": 0,
-	"minutes": 0,
-	"seconds": 10
+	"minutes": 25,
+	"seconds": 00
 }
 
 var status = 'work';
@@ -48,8 +48,11 @@ var activeTimer = false;
 var longBreakDelay = 4;
 var timerBeep = new Audio('https://dl.dropboxusercontent.com/u/21999493/beep.mp3');
 var clockTicking = new Audio('https://dl.dropboxusercontent.com/u/21999493/clock-ticking-3.mp3') //10 secs
-timerBeep.volume = 0.5;
-console.log(timerBeep.volume);
+clockTicking.loop = true;
+var alarmSound = true;
+var tickingSound = true;
+var enableAlerts = true;
+var nightMode = false;
 
 /*
 Calculate remaining time
@@ -71,7 +74,7 @@ var getTimeRemaining = function(endTime){
 	var seconds = Math.floor((total / 1000) % 60);
 	var minutes = Math.floor(((total / 1000) / 60) % 60);
 	var hours = Math.floor(((total / (1000 * 60 * 60)) % 24));
-	var days = Math.floor((total / (1000 * 60 * 60 * 24)));  
+	var days = Math.floor((total / (1000 * 60 * 60 * 24))); 
 	return {
 		'total': total,
 		'days': days,
@@ -104,6 +107,8 @@ var startClock = function(duration){
 	clock.innerHTML = time.minutes + ":" + time.seconds;
 
 	if (time.total <= -1){
+	clockTicking.pause();
+	clockTicking.currentTime = 0;
 	clearInterval(timeInterval);
 		if (status === 'work'){
 			nextSession('break');
@@ -123,6 +128,11 @@ var startClock = function(duration){
 	var currentTime = Date.parse(new Date());
 	var endTime = currentTime + durationMS;
 	var clock = document.getElementById('time');
+
+	if (tickingSound === true){
+		clockTicking.play();
+	}
+
 	updateClock();
 	timeInterval = setInterval(updateClock,1000)
 	/*			
@@ -160,9 +170,14 @@ var startClock = function(duration){
 var nextSession = function(sessionType){
 	activeTimer = false;
 	remainingTime ={};
-	timerBeep.play();
+	if (alarmSound === true){
+		timerBeep.play();	
+	}
 	if (sessionType === "break"){
-		alert('Pomodoro is finished! Have a break');
+		if (enableAlerts === true){
+			alert('Pomodoro is finished! Have a break');	
+		}
+		
 		$('.stop-label').html('SKIP');
 		$('#stop').children('.fa').removeClass('fa-stop').addClass('fa-step-forward');
 		$('.pomodoro-well').css('background-color', 'rgba(9,102,104,.9)');
@@ -184,7 +199,10 @@ var nextSession = function(sessionType){
 			}
 		}
 	} else if (sessionType === "work"){
-		alert('Break is over. The next pomodoro will go better. Good Luck!');
+		if (enableAlerts === true){
+			alert('Break is over. The next pomodoro will go better. Good Luck!');
+		}
+		
 		$('.stop-label').html('STOP');
 		$('#stop').children('.fa').removeClass('fa-step-forward').addClass('fa-stop');
 		pomodoroCounter++;
@@ -207,6 +225,7 @@ var nextSession = function(sessionType){
 	@ Assign values to global variable object remaining time to be accessed when resuming
 */
 var pauseClock = function(){
+	clockTicking.pause();
 	isPaused = true;
 	clearInterval(timeInterval);
 	var clock = document.getElementById('time');
@@ -238,14 +257,19 @@ var pauseClock = function(){
 	}
 }
 
-/*
-
+/*	@ Stops and resets the clock if doing a work pomodoro session
+	@ If on a break, skips the current break and proceeds to the next pomodoro session
 */
 var stopClock = function(){
+	clockTicking.pause();
+	clockTicking.currentTime = 0;
 	clearInterval(timeInterval);
 	activeTimer = false;
 	if (status === 'work'){
-		alert('Stopped pomodoro session');
+		if (enableAlerts === true){
+			alert('Stopped pomodoro session');	
+		}
+		
 		setClock(workLength);
 	} else if (status === 'shortBreak'){
 		nextSession('work');
@@ -308,6 +332,10 @@ var getCurrentSettings = function(){
 	$('#long-break-delay').val(longBreakDelay);
 	$('#auto-start-pomodoros').prop('checked', autoStartPomodoros);
 	$('#auto-start-breaks').prop('checked', autoStartBreaks);
+	$('#volume').val(timerBeep.volume);
+	$('#sound-the-alarm').prop('checked', alarmSound);
+	$('#ticking-sound').prop('checked', tickingSound);
+	$('#browser-alert').prop('checked', enableAlerts);
 
 	if (activeTimer === true){
 		$('.fieldset').prop('disabled', true);
@@ -350,6 +378,7 @@ $(document).ready(function(){
 		@ Check if all values are valid using array every, if not identify which failed the test
 	*/
 	$('.modal-save').on('click', function(){
+		//Timer Settings
 		var pomodoroDuration = $('#pomodoro-duration').val();
 		var shortBreakDuration = $('#short-break-duration').val();
 		var longBreakDuration = $('#long-break-duration').val();
@@ -357,7 +386,6 @@ $(document).ready(function(){
 
 		var settingsValue = [pomodoroDuration, shortBreakDuration, longBreakDuration];
 		var isValid = validateSettingsValue(settingsValue);
-		console.log(isValid);
 		if (isNaN(longBreak) === false && longBreak > 0){
 			isValid.push(true);
 		} else{
@@ -372,7 +400,6 @@ $(document).ready(function(){
 			console.log('saving settings');
 
 			pomodoroDuration = pomodoroDuration.split(':');
-			console.log(pomodoroDuration);
 			shortBreakDuration = shortBreakDuration.split(':');
 			longBreakDuration = longBreakDuration.split(':');
 
@@ -389,6 +416,14 @@ $(document).ready(function(){
 			longBreakLength.seconds = longBreakDuration[2];
 			autoStartPomodoros = $('#auto-start-pomodoros').prop("checked");
 			autoStartBreaks = $('#auto-start-breaks').prop("checked");
+
+			//NOTIFICATION SETTINGS
+			alarmSound = $('#sound-the-alarm').prop('checked');
+			tickingSound = $('#ticking-sound').prop('checked');
+			enableAlerts = $('#browser-alert').prop('checked');
+			timerBeep.volume = $('#volume').val();
+			clockTicking.volume = $('#volume').val();
+
 			//close the modal using jquery
 			$('#settings').modal('hide');
 		} else{
@@ -489,6 +524,20 @@ $(document).ready(function(){
 	$('#stop').on('click', function(){
 		if (activeTimer === true){
 			stopClock();
+		}
+	});
+
+	/*	@ Event Listener for night mode
+	*/
+	$('.night-mode').on('click', function(){
+		if (nightMode === false){
+			console.log(nightMode + " turning on nightMode");
+			nightMode = true;
+			$('.pomodoro').css('background-color', '#131313');
+		} else if (nightMode === true){
+			console.log(nightMode + " turning off nightMode");
+			nightMode = false;
+			$('.pomodoro').css('background-color', '#FFF');
 		}
 	});
 
