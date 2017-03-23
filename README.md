@@ -23,3 +23,9 @@ To be added in the future:
 - Add pomodoros by project (need support for months, even years)
 - Add Habitica integration
 - Add desktop notifications (Notification API)
+- Add gamification (Recieve small amount of gold when finishing a pomodoro)
+- Add leaderboards
+- Option to add ticking sound when less than 1 minute
+- Option to add notification when less than 1 minute
+- Add a to-do app functionality inside the pomodoro (like habitica with characters, skills, levels)
+- Integrate to TSW
