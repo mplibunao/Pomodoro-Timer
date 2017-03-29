@@ -1,5 +1,7 @@
 # Pomodoro-Timer
 
+Visit the github pages to view or try the prototype of this project: https://mplibunao.github.io/Pomodoro-Timer/#
+
 One of the Advanced Front End Development Projects for Free Code Camp
 https://www.freecodecamp.com/challenges/build-a-pomodoro-clock
 
