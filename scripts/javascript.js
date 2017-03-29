@@ -47,7 +47,7 @@ var pomodoroCounter = 1;
 var activeTimer = false;
 var longBreakDelay = 4;
 var timerBeep = new Audio('https://www.dropbox.com/s/mfu62f2yhuyinrh/beep.mp3?dl=0');
-var clockTicking = new Audio('https://www.dropbox.com/s/vf8h8v5rtpr5is1/clock-ticking-3.mp3?dl=0') //10 secs
+var clockTicking = new Audio('https://www.dropbox.com/s/vf8h8v5rtpr5is1/clock-ticking-3.mp3?dl=0'); //10 secs
 clockTicking.loop = true;
 var alarmSound = true;
 var tickingSound = true;
